@@ -81,14 +81,16 @@ function Get-ADALAccessToken
         [string]$ClientId,
         [parameter(Mandatory=$true)]
         [string]$ResourceId,
-        [parameter(Mandatory=$true, ParameterSetName="UserName")]
-        [string]$UserName,
-        [parameter(Mandatory=$true, ParameterSetName="UserName")]
-        [string]$Password,
-        [parameter(Mandatory=$true, ParameterSetName="RedirectUri")]
+        #[parameter(Mandatory=$true, ParameterSetName="UserName")]
+        #[string]$UserName,
+        #[parameter(Mandatory=$true, ParameterSetName="UserName")]
+        #[string]$Password,
+        [parameter(Mandatory=$false, ParameterSetName="RedirectUri")]
         [string]$RedirectUri,
         [parameter(Mandatory=$false, ParameterSetName="RedirectUri")]
         [switch]$ForcePromptSignIn
+        [parameter(Mandatory=$true, ParameterSetName="Secret")]
+        [string]$Secret,
     )    
     
     # Authority Format
@@ -117,7 +119,7 @@ function Get-ADALAccessToken
         else
         {
             # Create Credential
-            $cred = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.UserCredential($UserName, $Password)
+            $cred = New-Object Microsoft.IdentityModel.Clients.ActiveDirectory.ClientCredential($Secret)
             # Get AccessToken
             $authResult = $authContext.AcquireToken($ResourceId, $ClientId, $cred)
         }
